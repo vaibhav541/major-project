@@ -1,3 +1,4 @@
+
 angular.module('Controllers')
 .directive('schrollBottom', function () {		// custom directive for scrolling bottom on new message load
   return {
@@ -114,10 +115,12 @@ angular.module('Controllers')
 		if ($scope.chatMsg) {
 			$scope.isFileSelected = false;
 			$scope.isMsg = true;
+			
 			var dateString = formatAMPM(new Date());
 			$socket.emit("send-message",{ username : $rootScope.username, userAvatar : $rootScope.userAvatar, msg : $scope.chatMsg, hasMsg : $scope.isMsg , hasFile : $scope.isFileSelected , msgTime : dateString }, function(data){
 				//delivery report code goes here
 				if (data.success == true) {
+					
 					$scope.chatMsg = "";
 					$scope.setFocus = true;				
 				}
@@ -129,6 +132,8 @@ angular.module('Controllers')
 
 	// recieving new text message
 	$socket.on("new message", function(data){
+		//var audio = new Audio('./TTSOutput.wav');
+		//			audio.play();
 		if(data.username == $rootScope.username){
 			data.ownMsg = true;	
 		}else{
@@ -619,3 +624,4 @@ angular.module('Controllers')
     }
 
 })
+

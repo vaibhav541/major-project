@@ -29,17 +29,19 @@
     "passport.socketio"
   ],
   "dependencies": {
+    "node-aplay" : "^1.0.3",
+    "aplay": "^1.2.0",
     "aws-sdk": "^2.670.0",
     "body-parser": "^1.13.2",
     "express": "^4.17.1",
     "formidable": "^1.0.17",
     "fs": "0.0.1-security",
     "multer": "^1.4.2",
-    "socket.io": "^2.3.0",
-    "util": "^0.10.3",
     "readline-sync": "^1.4.9",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
+    "socket.io": "^2.3.0",
+    "util": "^0.10.3",
     "xmlbuilder": "^10.1.1"
   },
   "license": "MIT"
