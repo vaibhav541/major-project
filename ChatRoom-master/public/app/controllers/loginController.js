@@ -46,7 +46,7 @@ angular.module('Controllers',[])
 						else{
 						$scope.voice=female[Math.floor(Math.random() * 7)];}
 						$rootScope.voice=$scope.voice;
-						console.log($scope.voice);
+						//console.log($scope.voice);
 						$location.path('/v1/ChatRoom');					
 					}else{		// if nickname exists
 						$scope.errMsg = "Use different nickname.";

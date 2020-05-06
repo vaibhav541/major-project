@@ -50,8 +50,9 @@ angular.module('Controllers')
 	$scope.chatMsg = "";
 	$scope.users = [];
 	$scope.messeges = [];
-	$scope.voice="";
+	$scope.voice=$rootScope.voice;
 	
+	;
 	// redirection if user is not logged in.
 	if(!$rootScope.loggedIn){
 		$location.path('/v1/');
@@ -116,9 +117,10 @@ angular.module('Controllers')
 		if ($scope.chatMsg) {
 			$scope.isFileSelected = false;
 			$scope.isMsg = true;
+			console.log($rootScope.voice);
 			
 			var dateString = formatAMPM(new Date());
-			$socket.emit("send-message",{ username : $rootScope.username, userAvatar : $rootScope.userAvatar, msg : $scope.chatMsg, hasMsg : $scope.isMsg , hasFile : $scope.isFileSelected , msgTime : dateString }, function(data){
+			$socket.emit("send-message",{ username : $rootScope.username, userAvatar : $rootScope.userAvatar,voice: $rootScope.voice, msg : $scope.chatMsg, hasMsg : $scope.isMsg , hasFile : $scope.isFileSelected , msgTime : dateString }, function(data){
 				//delivery report code goes here
 				if (data.success == true) {
 					

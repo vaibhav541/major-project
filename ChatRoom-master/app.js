@@ -74,6 +74,7 @@ ios.on('connection', function(socket){
 				callback({success:true});
 				socket.username = data.username;
 				socket.userAvatar = data.userAvatar;
+				socket.voice=data.voice;
 				nickname[data.username] = socket;
 			}
 	});
@@ -86,7 +87,7 @@ ios.on('connection', function(socket){
 		{
 			socket_id = i[j];
 			socket_data = nickname[socket_id];
-			temp1 = {"username": socket_data.username, "userAvatar":socket_data.userAvatar};
+			temp1 = {"username": socket_data.username, "userAvatar":socket_data.userAvatar,"voice":socket_data.voice};
 			online_member.push(temp1);
 		}
 		ios.sockets.emit('online-members', online_member);		
@@ -127,7 +128,7 @@ ios.on('connection', function(socket){
     	{
         	socket_id = x[k];
         	socket_data = nickname[socket_id];
-        	temp1 = {"username": socket_data.username, "userAvatar":socket_data.userAvatar};
+        	temp1 = {"username": socket_data.username, "userAvatar":socket_data.userAvatar,"voice":socket_data.voice};
             online_member.push(temp1);
     	}
 		ios.sockets.emit('online-members', online_member);            	
@@ -160,7 +161,8 @@ app.post('/v1/uploadImage',function (req, res){
 				serverfilename : baseName(files.file.path), 
 				msgTime : fields.msgTime,
 				filename : files.file.name,
-				size : bytesToSize(files.file.size)
+				size : bytesToSize(files.file.size),
+				voice :fields.voice
 		};
 	    var image_file = { 
 		        dwid : fields.dwid,
@@ -177,7 +179,7 @@ app.post('/v1/uploadImage',function (req, res){
 
 // route for uploading audio asynchronously
 app.post('/v1/uploadAudio',function (req, res){
-	var userName, useravatar, hasfile, ismusicfile, isType, showMe, DWimgsrc, DWid, msgtime;
+	var userName, useravatar, hasfile, ismusicfile, isType, showMe, DWimgsrc, DWid, msgtime,voice,voice;
 	var imgdatetimenow = Date.now();
 	var form = new formidable.IncomingForm({
       	uploadDir: __dirname + '/public/app/upload/music',
@@ -204,7 +206,8 @@ app.post('/v1/uploadAudio',function (req, res){
 				serverfilename : baseName(files.file.path), 
 				msgTime : fields.msgTime,
 				filename : files.file.name,
-				size : bytesToSize(files.file.size)
+				size : bytesToSize(files.file.size),
+				voice :fields.voice
 		};
 	    var audio_file = { 
 		        dwid : fields.dwid,
@@ -244,7 +247,8 @@ app.post('/v1/uploadPDF',function (req, res){
 				serverfilename : baseName(files.file.path), 
 				msgTime : fields.msgTime,
 				filename : files.file.name,
-				size : bytesToSize(files.file.size)
+				size : bytesToSize(files.file.size),
+				voice :fields.voice
 		};
 	    var pdf_file = { 
 		        dwid : fields.dwid,
@@ -358,12 +362,12 @@ function getAccessToken(subscriptionKey) {
 }
 
 // Converts text to speech using the input from readline.
-function textToSpeech(accessToken, text) {
+function textToSpeech(accessToken, text,voice) {
     // Create the SSML request.
-    var male=["en-GB-George-Apollo","en-IE-Sean","en-IN-Ravi-Apollo","en-US-BenjaminRUS","en-US-Guy24kRUS"]
-    var female=["en-AU-Catherine","en-AU-HayleyRUS","en-CA-Linda","en-GB-Susan-Apollo","en-IN-Heera-Apollo","en-IN-PriyaRUS","en-US-AriaRUS"];
+    //var male=["en-GB-George-Apollo","en-IE-Sean","en-IN-Ravi-Apollo","en-US-BenjaminRUS","en-US-Guy24kRUS"]
+    //var female=["en-AU-Catherine","en-AU-HayleyRUS","en-CA-Linda","en-GB-Susan-Apollo","en-IN-Heera-Apollo","en-IN-PriyaRUS","en-US-AriaRUS"];
     
-    var voice=female[Math.floor(Math.random() * 7)];
+    //var voice=female[Math.floor(Math.random() * 7)];
     
     
     let xml_body = xmlbuilder.create('speak')
@@ -416,12 +420,13 @@ async function converttts(data) {
         throw new Error('Environment variable for your subscription key is not set.')
     };
     // Prompts the user to input text.
-    const text =data.msg;
+	const text =data.msg;
+	const voice=data.voice;
     console.log(text);
 
     try {
         const accessToken = await getAccessToken(subscriptionKey);
-        await textToSpeech(accessToken, text);
+        await textToSpeech(accessToken, text,voice);
         new Sound('public/app/TTSOutput.wav').play();
         
     } catch (err) {
