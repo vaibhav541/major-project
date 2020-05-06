@@ -50,6 +50,7 @@ angular.module('Controllers')
 	$scope.chatMsg = "";
 	$scope.users = [];
 	$scope.messeges = [];
+	$scope.voice="";
 	
 	// redirection if user is not logged in.
 	if(!$rootScope.loggedIn){
