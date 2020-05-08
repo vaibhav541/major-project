@@ -1,0 +1,26 @@
+extends layout
+
+block content
+  h1= "Custom Voice Text To Speech Demo"
+    </br>
+    </br>
+    form(name="add-estimation", method="post")
+        div.input
+            span.label What do you want to convert to speech?
+            </br>
+            </br>
+            textarea(name="description", cols="40", rows="5")
+        div.input
+            select#propertyType.select.form-control.input-lg(name='voicetype')
+                option(value='0') -- Select --
+                option(value='1') Narendra Modi Custom Voice
+                option(value='2') Male 1
+                option(value='3') Male 2
+                option(value='4') Male 3
+                option(value='5') Female 1
+                option(value='6') Female 2
+                option(value='7') Female 3
+        </br>
+        </br>
+        div.actions
+            input(type="submit", value="Convert")                
